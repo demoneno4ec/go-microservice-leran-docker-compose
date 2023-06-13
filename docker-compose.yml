@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: "go-fiber-learn"
+    build: ../microservice
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../microservice:/pplication
