@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  postgresql:
+    container_name: "go-fiber-learn-postgresql"
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - ${DATABASE_PORT}:5432
+
   web:
     build: ${PATH_MICROSERVICE}
     container_name: "go-fiber-learn-microservice"
@@ -10,18 +22,8 @@ services:
       - "3000:3000"
     volumes:
       - ${PATH_MICROSERVICE}:/application
-
-  postgresql:
-    container_name: "go-fiber-learn-postgresql"
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_DB}
-    volumes:
-      - postgres-db:/var/lib/postgresql/data
-    ports:
-      - ${DATABASE_PORT}:5432
+    depends_on:
+      - postgresql
 
 volumes:
   postgres-db:
