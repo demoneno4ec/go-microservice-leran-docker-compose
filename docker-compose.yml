@@ -3,10 +3,25 @@ version: "3.8"
 services:
   web:
     build: ${PATH_MICROSERVICE}
-    container_name: "go-fiber-learn"
+    container_name: "go-fiber-learn-microservice"
     env_file:
       - ${PATH_MICROSERVICE}/.env
     ports:
       - "3000:3000"
     volumes:
       - ${PATH_MICROSERVICE}:/application
+
+  postgresql:
+    container_name: "go-fiber-learn-postgresql"
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - ${DATABASE_PORT}:5432
+
+volumes:
+  postgres-db:
